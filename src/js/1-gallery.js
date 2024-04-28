@@ -1,3 +1,6 @@
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
+
 const images = [
   {
     preview:
@@ -63,38 +66,30 @@ const images = [
     description: 'Lighthouse Coast Sea',
   },
 ];
-const markup = images.reduce((html, image) => {
-  return (html += `
-        <li class="gallery-item" >
-<a class="gallery-link" href="${image.original}">
-<img
-  class="gallery-image"
-  src="${image.preview}"
-  data-source="${image.original}"
-  alt="${image.description}"
- "
-/>
-</a>
-</li>`);
-}, '');
-console.log(markup);
-const listImg = document.querySelector('.gallery');
-listImg.insertAdjacentHTML('beforeend', markup);
-listImg.addEventListener('click', event => {
-  event.preventDefault();
-  if (event.target.nodeName !== 'IMG') {
-    return;
+
+const gallery = document.querySelector('.gallery');
+
+function imgToHtml(images) {
+  let htmlList = '';
+
+  for (let index = 0; index < images.length; index++) {
+    const { preview, original, description } = images[index];
+    htmlList += `<li class="gallery-item">
+        <a class="gallery-link" href="${original}">
+          <img
+            class="gallery-image"
+            src="${preview}"
+            alt="${description}"
+          />
+        </a>
+      </li>`;
   }
-  const imageItem = event.target.dataset.source;
-  const modalImage = images.find(item => item.original === imageItem);
-  const instance = basicLightbox.create(`
-                        <img
-                    class="gallery-image"
-                    src="${modalImage.original}"
-                    data-source="${modalImage.original}"
-                    alt="${modalImage.description}"
-                />
-           
-`);
-  instance.show();
+  gallery.innerHTML = htmlList;
+}
+imgToHtml(images);
+
+let lightbox = new SimpleLightbox('.gallery a', {
+  captionsData: 'alt',
+  captionPosition: 'bottom',
+  captionDelay: 250,
 });
