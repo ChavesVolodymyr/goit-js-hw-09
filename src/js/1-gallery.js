@@ -83,24 +83,6 @@ const markup = images.reduce((html, image) => {
 }, '');
 const listImg = document.querySelector('.gallery');
 listImg.insertAdjacentHTML('beforeend', markup);
-listImg.addEventListener('click', event => {
-  event.preventDefault();
-  if (event.target.nodeName !== 'IMG') {
-    return;
-  }
-  const imageItem = event.target.dataset.source;
-  const modalImage = images.find(item => item.original === imageItem);
-  const instance = basicLightbox.create(`
-                        <img
-                    class="gallery-image"
-                    src="${modalImage.original}"
-                    data-source="${modalImage.original}"
-                    alt="${modalImage.description}"
-                />
-           
-`);
-  instance.show();
-});
 
 let lightbox = new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
