@@ -15,13 +15,15 @@ function fillUpForm() {
 
   if (savedData) {
     const savedFormData = JSON.parse(savedData);
-    if (savedFormData.email !== '' && savedFormData.message !== '') {
-      formData.email = savedFormData.email;
-      formData.message = savedFormData.message;
-      form.elements.email.value = formData.email;
-      form.elements.message.value = formData.message;
-    }
+    formData.email = savedFormData.email;
+    formData.message = savedFormData.message;
+    form.elements.email.value = formData.email;
+    form.elements.message.value = formData.message;
   }
+}
+
+function clearFormData() {
+  localStorage.removeItem(localStorageKey);
 }
 
 fillUpForm();
@@ -38,7 +40,7 @@ form.addEventListener('submit', event => {
     alert('Fill please all fields');
   } else {
     console.log('Form', formData);
-    localStorage.removeItem(localStorageKey);
+    clearFormData();
     formData.email = '';
     formData.message = '';
     form.reset();
