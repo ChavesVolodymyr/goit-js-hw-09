@@ -15,8 +15,11 @@ function fillUpForm() {
 
   if (savedData) {
     const savedFormData = JSON.parse(savedData);
-    formData.email.elements.value = savedFormData.email;
-    formData.message.elements.value = savedFormData.message;
+    form.elements.email.value = savedFormData.email;
+    form.elements.message.value = savedFormData.message;
+
+    formData.email = savedFormData.email;
+    formData.message = savedFormData.message;
   }
 }
 
@@ -26,26 +29,21 @@ function clearFormData() {
 
 fillUpForm();
 
-form.addEventListener('input', () => {
-  const formData = {
-    email: form.elements.email.value,
-    message: form.elements.message.value.trim(),
-  };
-  saveFormData(formData);
+form.addEventListener('input', event => {
+  formData.email = form.elements.email.value;
+  formData.message = form.elements.message.value.trim();
+  saveFormData();
 });
 
 form.addEventListener('submit', event => {
   event.preventDefault();
-  const formData = {
-    email: form.elements.email.value,
-    message: form.elements.message.value.trim(),
-  };
 
   if (formData.email === '' || formData.message === '') {
     alert('Fill please all fields');
   } else {
     console.log('Form:', formData);
-    localStorage.removeItem(localStorageKey);
+    formData.email = '';
+    formData.message = '';
     form.reset();
   }
 });
